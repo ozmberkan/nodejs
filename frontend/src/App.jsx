@@ -1,13 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import Toaster, { toast } from "react-hot-toast";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 const App = () => {
+  const [user, setUser] = useState(null);
+
+  const registerHandle = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5002/api/register",
+        data
+      );
+
+      setUser(response.data);
+      toast.success("Başarıyla kayıt oldunuz.");
+    } catch (error) {
+      toast.error("Bir hata oluştu.");
+    }
+  };
+
+  const loginHandle = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5002/api/login",
+        data
+      );
+
+      setUser(response.data);
+      toast.success("Başarıyla giriş yaptınız.");
+    } catch (error) {
+      toast.error("Bir hata oluştu.");
+    }
+  };
+
+  console.log(user);
+
   return (
-    <div className="min-h-screen flex-grow flex justify-center items-center font-inter">
-      <div className="flex flex-col ">
-        <h1 className=" bg-clip-text text-transparent bg-gradient-to-r from-[#202020] to-[#c33c] font-black text-[100px] leading-tight ">
-          Node JS.
-        </h1>
-        <span className="font-semibold animate-pulse">Eğitimi Başlıyor...</span>
+    <div>
+      <Toaster />
+      <div className="min-h-screen flex-grow flex justify-center items-center font-inter gap-x-5">
+        <Register registerHandle={registerHandle} />
+        <Login loginHandle={loginHandle} />
       </div>
     </div>
   );
