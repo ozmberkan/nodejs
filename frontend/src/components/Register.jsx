@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const Register = ({ registerHandle }) => {
+const Register = ({ registerHandle, loading }) => {
   const { register, handleSubmit } = useForm();
 
   return (
@@ -43,7 +43,7 @@ const Register = ({ registerHandle }) => {
         type="submit"
         className="bg-green-500 px-4 py-2 rounded-md text-white"
       >
-        Gönder
+        {loading ? "Yükleniyor.." : "Kayıt Ol"}
       </button>
     </form>
   );

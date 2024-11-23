@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const Login = ({ loginHandle }) => {
+const Login = ({ loginHandle, loading }) => {
   const { register, handleSubmit } = useForm();
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(loginHandle)}>
@@ -21,7 +21,7 @@ const Login = ({ loginHandle }) => {
         type="submit"
         className="bg-green-500 px-4 py-2 rounded-md text-white"
       >
-        Gönder
+        {loading ? "Yükleniyor.." : "Giriş Yap"}
       </button>
     </form>
   );

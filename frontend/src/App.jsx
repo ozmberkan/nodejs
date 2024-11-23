@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Toaster, { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import Register from "./components/Register";
 import Login from "./components/Login";
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const registerHandle = async (data) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:5002/api/register",
@@ -17,11 +19,14 @@ const App = () => {
       setUser(response.data);
       toast.success("Başarıyla kayıt oldunuz.");
     } catch (error) {
-      toast.error("Bir hata oluştu.");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const loginHandle = async (data) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:5002/api/login",
@@ -31,7 +36,9 @@ const App = () => {
       setUser(response.data);
       toast.success("Başarıyla giriş yaptınız.");
     } catch (error) {
-      toast.error("Bir hata oluştu.");
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,8 +48,8 @@ const App = () => {
     <div>
       <Toaster />
       <div className="min-h-screen flex-grow flex justify-center items-center font-inter gap-x-5">
-        <Register registerHandle={registerHandle} />
-        <Login loginHandle={loginHandle} />
+        <Register registerHandle={registerHandle} loading={loading} />
+        <Login loginHandle={loginHandle} loading={loading} />
       </div>
     </div>
   );
